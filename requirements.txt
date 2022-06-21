@@ -1,3 +1,4 @@
+geopy
 flask
 pyTelegramBotAPI
 psycopg2
