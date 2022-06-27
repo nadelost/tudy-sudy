@@ -10,6 +10,7 @@ from geopy.geocoders import Nominatim
 from telegram_bot_calendar import DetailedTelegramCalendar, LSTEP
 
 bot = telebot.TeleBot(configure.config["token"])
+
 geolocator = Nominatim(user_agent="tudy-sudy")
 
 db_connection = psycopg2.connect(configure.config["db_URI"], sslmode="require")
@@ -1003,6 +1004,11 @@ def car_type_next_step(message):
 # noinspection PyBroadException
 def car_color_next_step(message):
     try:
+        color = message.text
+        if color.isdigit():
+            msg = bot.reply_to(message, f'<b>Ви ввели недопустиме значення. Спробуйте ще раз</b>', parse_mode='HTML')
+            bot.register_next_step_handler(msg, car_color_next_step)
+            return
         car_info = car_info_dict[message.from_user.id]
         car_info.car_color = message.text
 
